@@ -14,7 +14,12 @@ function Article (opts) {
 Article.prototype.toHtml = function() {
   var $newArticle = $('article.template').clone();
 
+  $newArticle.attr('data-title', this.title);
   $newArticle.attr('data-category', this.category);
+  $newArticle.attr('data-author', this.author);
+  $newArticle.attr('data-authorUrl', this.authorUrl);
+  $newArticle.attr('data-publishedOn', this.publishedOn);
+  $newArticle.attr('data-body', this.body);
 
   // TODO: Use jQuery to fill in the template with properties
   // from this particular Article instance. We need to fill in:
