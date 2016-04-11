@@ -36,6 +36,7 @@ Article.prototype.toHtml = function() {
 
   // TODO: This cloned article is no longer a template, so we should remove that class...
 
+  $newArticle.removeClass('template');
   return $newArticle;
 };
 
