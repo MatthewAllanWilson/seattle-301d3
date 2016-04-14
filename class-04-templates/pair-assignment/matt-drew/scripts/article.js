@@ -9,6 +9,20 @@ function Article (opts) {
   this.publishedOn = opts.publishedOn;
 }
 
+Article.prototype.toAuthors = function () {
+  var $source = $('#author-template').html();
+  var template = Handlebars.compile($source);
+  return template(this);
+
+};
+
+Article.prototype.toCategories = function () {
+  var $source = $('#category-template').html();
+  var template = Handlebars.compile($source);
+  return template(this);
+
+};
+
 Article.prototype.toHtml = function() {
   var $source = $('#article-template').html();
   var template = Handlebars.compile($source);
@@ -37,4 +51,12 @@ rawData.forEach(function(ele) {
 
 articles.forEach(function(a){
   $('#articles').append(a.toHtml());
+});
+
+articles.forEach(function(a){
+  $('#author-filter').append(a.toAuthors());
+});
+
+articles.forEach(function(a){
+  $('#category-filter').append(a.toCategories());
 });
