@@ -10,9 +10,8 @@ function Article (opts) {
 }
 
 Article.prototype.toHtml = function() {
-  var $source = $('#article-template').toHtml();
+  var $source = $('#article-template').html();
   var template = Handlebars.compile($source);
-  return template(this);
   // TODO: Use handlebars to render your articles.
   //       - Select your template from the DOM.
   //       - Now "compile" your template with Handlebars.
@@ -23,6 +22,7 @@ Article.prototype.toHtml = function() {
   //   For example, you might want to display how old a post is, or say "(draft)" if it has no publication date:
   this.daysAgo = parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000);
   this.publishStatus = this.publishedOn ? 'published ' + this.daysAgo + ' days ago' : '(draft)';
+  return template(this);
 
   // TODO: Use the function that Handlebars gave you to return your filled-in html template for THIS article.
 };
@@ -33,8 +33,8 @@ rawData.sort(function(a,b) {
 
 rawData.forEach(function(ele) {
   articles.push(new Article(ele));
-})
+});
 
 articles.forEach(function(a){
-  $('#articles').append(a.toHtml())
+  $('#articles').append(a.toHtml());
 });
