@@ -43,42 +43,57 @@ Article.loadAll = function(dataPassedIn) {
 
 // This function below will retrieve the data from either a local or remote source,
 // and process it, then hand off control to the View.
+// Article.fetchAll = function() {
+//   if (localStorage.hackerIpsum) {
+//     // When our data is already in localStorage,
+//     // we can load it by calling the .loadAll() method,
+//     // and then render the index page (using the proper method on the articleView object).
+//     Article.loadAll(JSON.parse(localStorage.articleRawData));
+//
+//       //TODO: What do we pass in here to the .loadAll() method? Be careful
+//       // when handling different data types between here and localStorage!
+//
+//     articleView.initIndexPage();//(); //TODO: Change this fake method call to the correct
+//     // one that will render the index page.
+//   } else {
+//     $.getJSON('../data/hackerIpsum.json', function(data) {
+//       Article.loadAll(data);
+//       localStorage.setItem('articleRawData', JSON.stringify(data));
+//       articleView.initIndexPage();
+//     });
+//     // DONE: When we don't already have our data, we need to:
+//     //  DONE 1. Retrieve the JSON file from the server with AJAX (which jQuery method is best for this?),
+//
+//     // 2. Store the resulting JSON data with the .loadAll method,
+//
+//     // 3. Cache it in localStorage so we can skip the server call next time,
+// //SAVE IT IN LOCAL STORAGE
+//     // 4. And then render the index page (perhaps with an articleView method?).
+//
+//   }
+// }
+
+
+//Great work so far! STRETCH GOAL TIME! Cache the eTag located in Headers, to see if it's updated!
+
 Article.fetchAll = function() {
   if (localStorage.hackerIpsum) {
-    // When our data is already in localStorage,
-    // we can load it by calling the .loadAll() method,
-    // and then render the index page (using the proper method on the articleView object).
-    Article.loadAll(JSON.parse(localStorage.articleRawData));
-
-      //TODO: What do we pass in here to the .loadAll() method? Be careful
-      // when handling different data types between here and localStorage!
-
-    articleView.initIndexPage();//(); //TODO: Change this fake method call to the correct
-    // one that will render the index page.
+    $.ajax({
+      type: 'HEAD',
+      url: "../data/hackerIpsum.json"
+    }).done(function(xhr, message, data) {
+      var eTag = xhr.getResponseHeaders('etag');
+      if(eTag = localStorage.eTag) {
+        articleView.initIndexPage();
+      } else {
+        Article.loadAll(JSON.parse(localStorage.articleRawData));
+      }
+    })
   } else {
     $.getJSON('../data/hackerIpsum.json', function(data) {
       Article.loadAll(data);
       localStorage.setItem('articleRawData', JSON.stringify(data));
       articleView.initIndexPage();
     });
-    // DONE: When we don't already have our data, we need to:
-    //  DONE 1. Retrieve the JSON file from the server with AJAX (which jQuery method is best for this?),
-
-    // 2. Store the resulting JSON data with the .loadAll method,
-
-    // 3. Cache it in localStorage so we can skip the server call next time,
-//SAVE IT IN LOCAL STORAGE
-    // 4. And then render the index page (perhaps with an articleView method?).
-
   }
 }
-
-
-/* Great work so far! STRETCH GOAL TIME! Cache the eTag located in Headers, to see if it's updated!
-  Article.fetchAll = function() {
-    if (localStorage.hackerIpsum) {
-    // Let's make a request to get the eTag (hint: you may need to use a different
-    // jQuery method for this more verbose request).
-  } else {}
-}
-*/
