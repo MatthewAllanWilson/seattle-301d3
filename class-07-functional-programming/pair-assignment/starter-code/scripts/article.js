@@ -1,7 +1,7 @@
 // DONE TODO: Wrap the entire contents of this file in an IIFE.
 // Pass in to the IIFE a module, upon which objects can be attached for later access. SELF EXECUTING ANONYMOUS FUNCTION
 
-// (function(module){
+(function(module){
 
   function Article (opts) {
     this.author = opts.author;
@@ -78,9 +78,12 @@
   };
 
   // TODO: Chain together a `map` and a `reduce` call to get a rough count of all words in all articles.
+var wordCount = 0;
+
   Article.numWordsAll = function() {
     return Article.all.map(function(article) {
-      return article.body.match(/\b\w+/g).length;
+      article.wordCount = article.body.match(/\b\w+/g).length;
+      return article.wordCount;
   //This looks for white space?
       // Grab the words from the `article` `body` (hint: lookup String.prototype.match() and regexp!).
     })
@@ -116,22 +119,26 @@
     return Article.allAuthors().map(function(author) {
       return {
         name: author,
-        numWords: Article.numWordsAll().filter(function(curArticle){
-          // return Article.all.map(function(curArticle){
-          //   return article.body.match(/\b\w+/g).length;
-          // });
-
+        numWords: Article.all.filter(function(curArticle){
+          return (curArticle.author === author).map(function(){
+            return curArticle.wordCount;
+          })
         })
-
+        .reduce(function(acc, cur, idx, arr){
+            return acc + cur;
+          });
+      };
+    });
+  };
         //  someCollection.filter(function(curArticle) {
         //  what do we return here to check for matching authors?
         // })
         // .map(...) // use .map to return the author's word count for each article (hint: regexp!).
         // .reduce(...) // squash this array of numbers into one big number!
-      };
-    });
-  };
+      // };
+    // });
 
-//   module.Article = Article;
-//
-// })(window);
+
+  module.Article = Article;
+
+})(window);
