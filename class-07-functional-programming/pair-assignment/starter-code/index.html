@@ -83,6 +83,7 @@
     <script src="/scripts/article.js"></script>
     <script src="/scripts/articleView.js"></script>
     <script>
+      Article.fetchAll(articleView.initIndexPage);
       // TODO: The .fetchAll() method call now requires a callback.
       // What do we want to run WHEN this method is done?
       // Article.fetchAll(); // Add an argument to the function call.

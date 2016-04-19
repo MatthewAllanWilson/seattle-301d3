@@ -48,7 +48,7 @@
   // that will execute once the loading of articles is done. We do this because we might want
   // to call other view functions, and not just the initIndexPage() that we are replacing.
   // Now, instead of calling articleView.initIndexPage(), we can just run our callback.
-    Article.fetchAll = function() {
+    Article.fetchAll = function(a) {
       if (localStorage.hackerIpsum) {
         $.ajax({
         type: 'HEAD',
@@ -60,7 +60,7 @@
             Article.getAll();
           } else {
             Article.loadAll(JSON.parse(localStorage.hackerIpsum));
-            articleView.initIndexPage();
+            a();
           }
         }
       });
@@ -78,7 +78,7 @@
   };
 
   // TODO: Chain together a `map` and a `reduce` call to get a rough count of all words in all articles.
-var wordCount = 0;
+  var wordCount = 0;
 
   Article.numWordsAll = function() {
     return Article.all.map(function(article) {
@@ -112,21 +112,22 @@ var wordCount = 0;
   //     // what data type should this accumulator be and where is it placed?
   // };
 
+  // TODO: Transform each author string into an object with 2 properties: One for
+  // the author's name, and one for the total number of words across the matching articles
+  // written by the specified author.
+
   Article.numWordsByAuthor = function() {
-    // TODO: Transform each author string into an object with 2 properties: One for
-    // the author's name, and one for the total number of words across the matching articles
-    // written by the specified author.
     return Article.allAuthors().map(function(author) {
       return {
         name: author,
         numWords: Article.all.filter(function(curArticle){
           return (curArticle.author === author).map(function(){
             return curArticle.wordCount;
-          })
+          });
         })
         .reduce(function(acc, cur, idx, arr){
-            return acc + cur;
-          });
+          return acc + cur;
+        })
       };
     });
   };
@@ -138,7 +139,5 @@ var wordCount = 0;
       // };
     // });
 
-
   module.Article = Article;
-
 })(window);
