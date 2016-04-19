@@ -78,12 +78,10 @@
   };
 
   // TODO: Chain together a `map` and a `reduce` call to get a rough count of all words in all articles.
-  var wordCount = 0;
 
   Article.numWordsAll = function() {
     return Article.all.map(function(article) {
-      article.wordCount = article.body.match(/\b\w+/g).length;
-      return article.wordCount;
+      return article.body.match(/\b\w+/g).length;
   //This looks for white space?
       // Grab the words from the `article` `body` (hint: lookup String.prototype.match() and regexp!).
     })
@@ -121,9 +119,11 @@
       return {
         name: author,
         numWords: Article.all.filter(function(curArticle){
-          return (curArticle.author === author).map(function(){
-            return curArticle.wordCount;
-          });
+          return curArticle.author === author;
+        })
+        .map(function(authorArticle){
+          console.log('author article', authorArticle);
+          return authorArticle.body.match(/\b\w+/g).length;
         })
         .reduce(function(acc, cur, idx, arr){
           return acc + cur;
@@ -131,13 +131,6 @@
       };
     });
   };
-        //  someCollection.filter(function(curArticle) {
-        //  what do we return here to check for matching authors?
-        // })
-        // .map(...) // use .map to return the author's word count for each article (hint: regexp!).
-        // .reduce(...) // squash this array of numbers into one big number!
-      // };
-    // });
 
   module.Article = Article;
 })(window);
