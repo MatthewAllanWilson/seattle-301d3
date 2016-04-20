@@ -19,10 +19,10 @@
     return template(this);
   };
 
-  // TODO: Set up a DB table for articles.
+  //DONE! TODO: Set up a DB table for articles.
   Article.createTable = function(callback) {
     webDB.execute(
-      '...;', // what SQL command do we run here inside these quotes?
+      'CREATE TABLE IF NOT EXISTS Articles (id INTEGER PRIMARY KEY, title VARCHAR(255), author VARCHAR(255), authorUrl VARCHAR(255), category VARCHAR(255), publishedOn DATE, body TEXT)', // what SQL command do we run here inside these quotes?
       function(result) {
         console.log('Successfully set up the articles table.', result);
         if (callback) callback();
@@ -30,12 +30,12 @@
     );
   };
 
-  // TODO: Insert an article instance into the database:
+  // DONE TODO: Insert an article instance into the database:
   Article.prototype.insertRecord = function(callback) {
     webDB.execute(
       [
         {
-          'sql': '...;',
+          'sql': 'INSERT INTO Articles (title, author, authorUrl, category, publishedOn, body) VALUES (?, ?, ?, ?, ?, ?);',
           'data': [this.title, this.author, this.authorUrl, this.category, this.publishedOn, this.body]
         }
       ],
