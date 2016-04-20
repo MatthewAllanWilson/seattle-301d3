@@ -19,7 +19,7 @@
     return template(this);
   };
 
-  //DONE! TODO: Set up a DB table for articles.
+  //DONE: Set up a DB table for articles.
   Article.createTable = function(callback) {
     webDB.execute(
       'CREATE TABLE IF NOT EXISTS Articles (id INTEGER PRIMARY KEY, title VARCHAR(255), author VARCHAR(255), authorUrl VARCHAR(255), category VARCHAR(255), publishedOn DATE, body TEXT)', // what SQL command do we run here inside these quotes?
@@ -30,7 +30,7 @@
     );
   };
 
-  // DONE TODO: Insert an article instance into the database:
+  // DONE: Insert an article instance into the database:
   Article.prototype.insertRecord = function(callback) {
     webDB.execute(
       [
@@ -43,7 +43,7 @@
     );
   };
 
-  // TODO: Delete an article instance from the database:
+  // DONE: Delete an article instance from the database:
   Article.prototype.deleteRecord = function(callback) {
     webDB.execute(
       [
@@ -89,7 +89,7 @@
   // If the DB has data already, we'll load up the data (by descended published order), and then hand off control to the View.
   // If the DB is empty, we need to retrieve the JSON and process it.
   Article.fetchAll = function(next) {
-    webDB.execute('SELECT * Articles ORDER BY publishedOn DESC', function(rows) { // TODO: fill these quotes to 'select' our table.
+    webDB.execute('SELECT * Articles ORDER BY publishedOn DESC', function(rows) { // DONE: fill these quotes to 'select' our table.
       if (rows.length) {
         Article.loadAll(rows);
         next();
