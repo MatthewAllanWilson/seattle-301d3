@@ -1,8 +1,8 @@
-(function(module) {
+(function (module) {
   var repoView = {};
 
   // DONE: Private methods declared here live only within the scope of the wrapping IIFE.
-  var ui = function() {
+  var ui = function () {
     var $about = $('#about'); // Best practice: Cache the DOM query if it's used more than once.
 
     $about.find('ul').empty();
@@ -10,15 +10,19 @@
   };
 
   // DONE!!  But will need to figure out what 'repo' is
-//  : Remember that new Handlebars template? Let's compile it!
+  //  : Remember that new Handlebars template? Let's compile it!
   // Save the result in this `render` variable.
-  var render = function(repo) {
+  var render = function (repo) {
+
+    console.log("repo", repo.commits);
     var template = Handlebars.compile($('#repo-template').text());
+
     return template(repo);
+
   };
 
   // DONE: If all the data is loaded, we can prep the UI and render the repos.
-  repoView.index = function() {
+  repoView.index = function () {
     ui();
 
     // The jQuery `append` method lets us append an entire array of HTML elements at once,

@@ -1,18 +1,39 @@
-(function(module) {
+(function (module) {
   var repos = {};
 
   repos.all = [];
 
-  repos.requestRepos = function(callback) {
+  repos.requestRepos = function (callback) {
     // DONE!!: How would you like to fetch your repos? Someone say AJAX!?
     //  Don't forget to call the callback!
     $.ajax({
       url: 'https://api.github.com/users/' + githubUser + '/repos' + '?per_page=50' + '&sort=updated',
       type: 'GET',
-      headers: {'Authorization': 'token ' + githubToken},
-      success: function(data) {
-          repos.all = data;
-        callback();
+      headers: {
+        'Authorization': 'token ' + githubToken
+      },
+      success: function (data) {
+        repos.all = data;
+
+        repos.all.map(function (repo) {
+          $.ajax({
+            url: 'https://api.github.com/repos/' + githubUser + '/' + repo.name + '/stats/participation',
+            type: 'GET',
+            headers: {
+              'Authorization': 'token ' + githubToken
+            },
+            success: function (data) {
+              if (data.owner.length > 0) {
+                repo.commits = data.owner.reduce(function (a, b) {
+                  return a + b;
+                });
+              }
+              callback();
+            }
+          });
+
+        });
+
       }
     });
 
@@ -20,8 +41,8 @@
 
   // DONE: Model method that filters the full collection for repos with a particular attribute.
   // You could use this to filter all repos that have a non-zero `forks_count`, `stargazers_count`, or `watchers_count`.
-  repos.with = function(attr) {
-    return repos.all.filter(function(repo) {
+  repos.with = function (attr) {
+    return repos.all.filter(function (repo) {
       return repo[attr];
     });
   };
