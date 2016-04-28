@@ -13,6 +13,9 @@
   };
 
   // COMMENT: What does this method do?  What is it's execution path?
+
+  //This function creates and displays lists of authors and categories on the page.  The items from these lists can then be selected and that info will be displayed.  It does this by compiling a handlebars template and setting it to a variable.  That variable (template) is then passed in to the Article.allAuthors and Article.allCategories functions.  These functions are methods on the Article object.  Article.allAuthors, defined in article.js line 107, maps the articles array and returns an array of author names, then reduces the array to unique author names.  Then (back in populateFilters) each other in the array is appended to the page using the template variable.  Article.allCategories, defined in article.js line 120, uses SQL to pull a list of the article categories from the database, which is then (back in populateFilters) appended to the DOM using the template variable.
+
   articleView.populateFilters = function() {
     var options,
       template = Handlebars.compile($('#option-template').text());
