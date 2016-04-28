@@ -35,6 +35,7 @@
   };
 
   // COMMENT: What does this method do?  What is it's execution path?
+  //This runs Article.findWhere which runs a SQL query to pull articles with the field of category and the value of the specific category name, then runs the callback function which is categoryData, which sets the articles property on the context object to the array of article(s) in that category.  The context object is then passed to the next callback in the chain, which is the articlesController.index.
   articlesController.loadByCategory = function(ctx, next) {
     var categoryData = function(articlesInCategory) {
       ctx.articles = articlesInCategory;
@@ -45,6 +46,7 @@
   };
 
   // COMMENT: What does this method do?  What is it's execution path?
+  //This method is the first callback in the home page route.  It checks to see if the Article.all array has the articles.  If it does, it sets the array to the articles property on the context object and then runs the callback function (next).  If the array is empty, it will run the Article.fetchAll function which pulls the data from the JSON and fills the Article.all array, then runs articleData which sets the Article.all array to the context object and then runs the callback (next).
   articlesController.loadAll = function(ctx, next) {
     var articleData = function(allArticles) {
       ctx.articles = Article.all;
