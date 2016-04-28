@@ -41,6 +41,11 @@
   };
 
   // COMMENT: What does this method do?  What is it's execution path?
+
+  //This is an event delegation method which uses a jQuery event handler to change the url whenever 
+  //so the page routes to the selected author and/or category.
+  //sets variable resource to this.id.replace which
+
   articleView.handleFilters = function() {
     $('#filters').one('change', 'select', function() {
       resource = this.id.replace('-filter', '');
