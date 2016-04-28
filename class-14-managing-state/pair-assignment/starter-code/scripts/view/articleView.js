@@ -14,7 +14,7 @@
 
   // COMMENT: What does this method do?  What is it's execution path?
 
-  //This function creates and displays lists of authors and categories on the page.  The items from these lists can then be selected and that info will be displayed.  It does this by compiling a handlebars template and setting it to a variable.  That variable (template) is then passed in to the Article.allAuthors and Article.allCategories functions.  These functions are methods on the Article object.  Article.allAuthors, defined in article.js line 107, maps the articles array and returns an array of author names, then reduces the array to unique author names.  Then (back in populateFilters) each other in the array is appended to the page using the template variable.  Article.allCategories, defined in article.js line 120, uses SQL to pull a list of the article categories from the database, which is then (back in populateFilters) appended to the DOM using the template variable.
+  //This function creates and displays lists of authors and categories in the filter.  It does this by compiling a handlebars template and setting it to a variable.  That variable (template) is then passed in to the Article.allAuthors and Article.allCategories functions.  These functions are methods on the Article object.  Article.allAuthors, defined in article.js line 107, maps the articles array and returns an array of author names, then reduces the array to unique author names.  Then (back in populateFilters) each other in the array is appended to the page using the template variable.  Article.allCategories, defined in article.js line 120, uses SQL to pull a list of the article categories from the database, which is then (back in populateFilters) appended to the DOM using the template variable.
 
   articleView.populateFilters = function() {
     var options,
@@ -42,9 +42,7 @@
 
   // COMMENT: What does this method do?  What is it's execution path?
 
-  //This is an event delegation method which uses a jQuery event handler to change the url whenever 
-  //so the page routes to the selected author and/or category.
-  //sets variable resource to this.id.replace which
+  //This is an event delegation method that handles the event by setting and triggering the page route based on the filter selection. It both replaces white space (no spaces in URLs!) and utlizes the 'select' id attribute to constuct the route which will then trigger the callbacks defined for that route in the routes.js file.
 
   articleView.handleFilters = function() {
     $('#filters').one('change', 'select', function() {
@@ -126,6 +124,8 @@
   };
 
   // COMMENT: What does this method do?  What is it's execution path?
+  // This method is invoked by the articlesController.index method and it handles which articles are appended to the DOM based on what articles are passed in from the controller.
+
   articleView.index = function(articles) {
     $('#articles').show().siblings().hide();
 
@@ -136,6 +136,7 @@
 
     articleView.populateFilters();
     // COMMENT: What does this method do?  What is it's execution path?
+    // We outlined what this method does in detail where it is defined above. However, it is important to note that this invocation is setting up the listener in the DOM. 
     articleView.handleFilters();
 
     // DONE: Replace setTeasers with just the truncation logic, if needed:
